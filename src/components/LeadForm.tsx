@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 interface LeadFormProps {
   buttonText?: string;
@@ -40,15 +41,23 @@ const LeadForm = ({ buttonText = "Оставить номер и получит�
     }
     setLoading(true);
     try {
-      // TODO: Connect to Supabase
-      // const { error } = await supabase.from('leads').insert({ phone: digits, source: 'vdnh_landing' });
-      
+      const { error: dbError } = await supabase.from('leads').insert({
+        phone: digits,
+        source: 'vdnh_landing',
+      });
+
+      if (dbError) throw dbError;
+
+      // Send email notification (fire and forget)
+      supabase.functions.invoke('notify-lead', {
+        body: { phone: digits, source: 'vdnh_landing' },
+      }).catch(console.error);
+
       // Yandex Metrika event
       if (typeof window !== "undefined" && (window as any).ym) {
         (window as any).ym((window as any).YM_ID, "reachGoal", "lead_submit");
       }
-      
-      console.log("Lead submitted:", digits);
+
       onSuccess?.();
     } catch {
       setError("Ошибка отправки. Попробуйте ещё раз.");
