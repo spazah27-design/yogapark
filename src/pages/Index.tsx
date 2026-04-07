@@ -29,13 +29,13 @@ const Index = () => {
       <section className="relative py-16 md:py-24">
         <div className="container max-w-3xl text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-tight">
-            Йога у ВДНХ для&nbsp;тех, кто&nbsp;устал жить в&nbsp;зажатом теле
+            Йога рядом с&nbsp;метро ВДНХ для&nbsp;тех, кто&nbsp;устал жить в&nbsp;зажатом теле
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             Мини-группа до 4 человек. Спокойная, интенсивная практика без эзотерики для тех, кто много сидит, устаёт и хочет снова чувствовать тело.
           </p>
           <p className="text-base text-muted-foreground">
-            Рядом с метро ВДНХ. Подходит новичкам и тем, кто давно откладывал.
+            Небольшой зал в 7–8 минутах от метро ВДНХ. Подходит новичкам и тем, кто давно откладывал.
           </p>
 
           <div className="flex justify-center pt-4">
@@ -43,9 +43,9 @@ const Index = () => {
               <ThankYou />
             ) : (
               <div className="w-full max-w-md space-y-3">
-                <LeadForm onSuccess={() => setHeroSubmitted(true)} />
+                <LeadForm buttonText="Оставить номер и записаться на пробное" onSuccess={() => setHeroSubmitted(true)} />
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  После заявки я открою доступ в закрытый канал с расписанием, ближайшим набором и короткими видео о формате занятий.
+                  После заявки я свяжусь с вами, пришлю расписание ближайшего набора и ссылки на Telegram/Max.
                 </p>
               </div>
             )}
@@ -123,7 +123,7 @@ const Index = () => {
           <SectionTitle>Кто ведёт</SectionTitle>
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
             <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shrink-0 mx-auto md:mx-0">
-              <img src={trainerImg} alt="Спартак — тренер по йоге" className="w-full h-full object-cover object-top" />
+              <img src={trainerImg} alt="Спартак — тренер по йоге рядом с метро ВДНХ" className="w-full h-full object-cover object-top" />
             </div>
             <div className="space-y-4">
               <h3 className="font-heading text-2xl font-semibold text-foreground">Спартак</h3>
@@ -151,17 +151,22 @@ const Index = () => {
           <SectionTitle>Где проходят занятия</SectionTitle>
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="w-full md:w-1/2 rounded-2xl overflow-hidden aspect-[4/3]">
-              <img src={spaceImg} alt="Зал для занятий йогой у метро ВДНХ" className="w-full h-full object-cover" />
+              <img src={spaceImg} alt="Зал для занятий йогой рядом с метро ВДНХ" className="w-full h-full object-cover" />
             </div>
-            <div className="space-y-4 md:w-1/2">
+            <div className="space-y-5 md:w-1/2">
               <p className="text-foreground leading-relaxed">
-                Небольшой зал рядом с метро ВДНХ. Формат до 4 человек позволяет работать внимательнее и без ощущения, что вы просто потерялись в общем потоке.
+                Небольшой зал недалеко от метро ВДНХ. Формат до 4 человек позволяет работать внимательнее и без ощущения, что вы потерялись в потоке.
               </p>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                {["Маленькая группа", "Спокойная обстановка", "Удобно добираться", "Внимание к каждому"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    <span>{item}</span>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  "7–8 минут от метро ВДНХ",
+                  "Мини-группа до 4 человек",
+                  "Спокойная обстановка",
+                  "Не потоковая студия",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2.5 p-3 rounded-lg bg-background border border-border">
+                    <span className="mt-1 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                    <span className="text-sm text-foreground">{item}</span>
                   </div>
                 ))}
               </div>
@@ -176,13 +181,14 @@ const Index = () => {
           <SectionTitle>Форматы и цены</SectionTitle>
           <div className="grid sm:grid-cols-3 gap-5">
             {[
-              { title: "Разовое / пробное", price: "1 500 ₽" },
-              { title: "Абонемент 4 занятия", price: "5 000 ₽" },
-              { title: "Абонемент 8 занятий", price: "9 000 ₽" },
+              { title: "Разовое / пробное", price: "1 500 ₽", note: null },
+              { title: "Абонемент 4 занятия", price: "5 000 ₽", note: "1 250 ₽ за занятие" },
+              { title: "Абонемент 8 занятий", price: "9 000 ₽", note: "1 125 ₽ за занятие" },
             ].map((plan, i) => (
-              <div key={i} className="p-6 rounded-lg bg-card border border-border text-center space-y-3">
+              <div key={i} className="p-6 rounded-lg bg-card border border-border text-center space-y-2">
                 <h3 className="font-heading text-lg font-semibold text-foreground">{plan.title}</h3>
                 <p className="text-3xl font-heading font-bold text-foreground">{plan.price}</p>
+                {plan.note && <p className="text-xs text-muted-foreground">{plan.note}</p>}
               </div>
             ))}
           </div>
@@ -200,8 +206,8 @@ const Index = () => {
               { q: "Это мягкая или интенсивная практика?", a: "Скорее интенсивная, но без надрыва. Нагрузка ощутимая, но безопасная — вы работаете в своём темпе." },
               { q: "Если у меня слабая подготовка?", a: "Это нормально. Маленькая группа позволяет уделять внимание каждому и корректировать нагрузку." },
               { q: "Сколько человек в группе?", a: "Максимум 4 человека. Это принципиальное ограничение формата." },
-              { q: "Как записаться на первое занятие?", a: "Оставьте номер телефона в форме на этой странице. Я свяжусь с вами и согласуем удобное время." },
-              { q: "Что будет после заявки?", a: "Я открою вам доступ в закрытый канал с расписанием и подробностями. Свяжусь лично для записи на ближайшее занятие." },
+              { q: "Как записаться на первое занятие?", a: "Оставьте номер телефона в форме на этой странице. Я свяжусь с вами и согласуем удобное время для пробного занятия." },
+              { q: "Что будет после заявки?", a: "Я свяжусь с вами лично, пришлю расписание ближайшего набора и ссылки на закрытый канал в Telegram и Max." },
             ].map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-lg px-5 bg-background">
                 <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4">
@@ -219,15 +225,15 @@ const Index = () => {
       {/* Final CTA */}
       <section id="final-cta" className="py-16 md:py-20">
         <div className="container max-w-2xl text-center space-y-6">
-          <SectionTitle>Оставьте номер, и я пришлю приглашение в закрытый канал</SectionTitle>
+          <SectionTitle>Запишитесь на пробное занятие</SectionTitle>
           <p className="text-muted-foreground leading-relaxed">
-            Там будут расписание, ближайшие окна в группу у ВДНХ, короткие видео о формате и ответы на частые вопросы.
+            Оставьте номер — я свяжусь с вами, расскажу про ближайшие окна в группе и пришлю ссылки на Telegram и Max.
           </p>
           {ctaSubmitted ? (
             <ThankYou />
           ) : (
             <div className="flex justify-center">
-              <LeadForm buttonText="Получить приглашение" onSuccess={() => setCtaSubmitted(true)} />
+              <LeadForm buttonText="Записаться на пробное занятие" onSuccess={() => setCtaSubmitted(true)} />
             </div>
           )}
         </div>
@@ -238,14 +244,14 @@ const Index = () => {
         <div className="container text-center space-y-3 text-sm text-muted-foreground">
           <p className="font-heading text-lg font-semibold text-foreground">Спартак</p>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
-            <a href="tel:+799699715127" className="hover:text-foreground transition">+7 996 997-15-127</a>
+            <a href="tel:+79969971527" className="hover:text-foreground transition">+7 996 997-15-27</a>
             <a href="mailto:almaznayaspina@gmail.com" className="hover:text-foreground transition">almaznayaspina@gmail.com</a>
           </div>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
             <a href="https://t.me/yogavdnh" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition">Telegram</a>
             <a href="https://max.ru/join/-5rZSTR_Yu0HQJAsQgOwVJAo-hZlt1rS7_Fu8UsOmnc" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition">Max</a>
           </div>
-          <a href="#" className="text-xs hover:text-foreground transition">Политика конфиденциальности</a>
+          <a href="/privacy" className="text-xs hover:text-foreground transition">Политика конфиденциальности</a>
         </div>
       </footer>
 
