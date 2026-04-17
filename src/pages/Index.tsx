@@ -29,13 +29,13 @@ const Index = () => {
       <section className="relative py-16 md:py-24">
         <div className="container max-w-3xl text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-tight">
-            Йога рядом с&nbsp;метро ВДНХ для&nbsp;тех, кто&nbsp;устал жить в&nbsp;зажатом теле
+            Йога рядом с&nbsp;метро ВДНХ в&nbsp;мини-группе до&nbsp;4&nbsp;человек
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Мини-группа до 4 человек. Спокойная, интенсивная практика без эзотерики для тех, кто много сидит, устаёт и хочет снова чувствовать тело.
+            Для тех, кто много сидит, чувствует зажатость в спине и шее и хочет вернуть телу подвижность без эзотерики и лишней болтовни.
           </p>
           <p className="text-base text-muted-foreground">
-            Небольшой зал в 7–8 минутах от метро ВДНХ. Подходит новичкам и тем, кто давно откладывал.
+            Небольшой зал в 7–8 минутах от метро ВДНХ. Подходит новичкам.
           </p>
 
           <div className="flex justify-center pt-4">
@@ -45,7 +45,7 @@ const Index = () => {
               <div className="w-full max-w-md space-y-3">
                 <LeadForm buttonText="Оставить номер и записаться на пробное" onSuccess={() => setHeroSubmitted(true)} />
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  После заявки я свяжусь с вами, пришлю расписание ближайшего набора и ссылки на Telegram/Max.
+                  После заявки я свяжусь с вами, расскажу про ближайшие места в группе и пришлю удобный способ связи через Telegram или Max.
                 </p>
               </div>
             )}
@@ -56,13 +56,13 @@ const Index = () => {
       {/* Для кого */}
       <section className="py-16 md:py-20 bg-card">
         <div className="container">
-          <SectionTitle>Для кого эта практика</SectionTitle>
+          <SectionTitle>Кому подойдёт этот формат</SectionTitle>
           <div className="grid md:grid-cols-2 gap-5">
             {[
-              { title: "Сидячая работа и зажатая спина", text: "Если к вечеру тело как будто сжалось, а шея и спина постоянно забирают внимание." },
-              { title: "Постоянная усталость и мало движения", text: "Если день проходит в кресле, а сил на тело и себя уже не остаётся." },
-              { title: "Хочется вернуть осанку и собранность", text: "Если хочется двигаться увереннее, держать корпус ровнее и снова чувствовать внутренний стержень." },
-              { title: "Нужна практика без эзотерики и лишней болтовни", text: "Если вам нужен не образ гуру, а понятная работа с телом в маленькой группе." },
+              { title: "Сидячая работа", text: "Если к вечеру шея и спина забирают на себя всё внимание." },
+              { title: "Мало движения", text: "Если день проходит в кресле, а телу давно не хватает нормальной нагрузки." },
+              { title: "Хочется выпрямиться", text: "Если хочется держать корпус ровнее, двигаться свободнее и не разваливаться к концу дня." },
+              { title: "Нужен понятный подход", text: "Если вам ближе конкретная работа с телом, чем разговоры про энергии и потоки." },
             ].map((card, i) => (
               <div key={i} className="p-6 rounded-lg bg-background border border-border">
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{card.title}</h3>
@@ -76,13 +76,13 @@ const Index = () => {
       {/* Что даёт */}
       <section className="py-16 md:py-20">
         <div className="container">
-          <SectionTitle>Что даёт регулярная практика</SectionTitle>
+          <SectionTitle>Что дают регулярные занятия</SectionTitle>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               "Больше подвижности и ощущения тела",
-              "Меньше зажатости после рабочего дня",
-              "Ровнее осанка и лучше контроль тела",
-              "Регулярность и ощущение внутренней собранности",
+              "Меньше скованности после рабочего дня",
+              "Более ровная осанка и собранный корпус",
+              "Спокойнее голова и меньше внутреннего шума",
             ].map((text, i) => (
               <div key={i} className="p-6 rounded-lg bg-card border border-border text-center">
                 <p className="text-foreground font-medium leading-relaxed">{text}</p>
@@ -96,11 +96,11 @@ const Index = () => {
       <section className="py-16 md:py-20 bg-card">
         <div className="container max-w-3xl">
           <SectionTitle>Как проходят занятия</SectionTitle>
+          <p className="text-foreground text-lg mb-6">60 минут спокойной и плотной работы с телом.</p>
           <div className="space-y-4 mb-8">
             {[
-              "1 час",
               "Мини-группа до 4 человек",
-              "Настройка и включение внимания",
+              "Настройка внимания",
               "Разогрев",
               "Основная статическая и статодинамическая практика",
               "Завершение и выдох",
@@ -112,7 +112,7 @@ const Index = () => {
             ))}
           </div>
           <p className="text-muted-foreground leading-relaxed border-l-2 border-primary pl-4">
-            Формат интенсивный, но без показухи. Не нужно быть гибким, идеальным или подготовленным. Важно только прийти и начать заниматься регулярно.
+            Формат интенсивный, но без гонки. Не нужно быть гибким или подготовленным. Важно просто прийти и начать заниматься регулярно.
           </p>
         </div>
       </section>
@@ -129,16 +129,10 @@ const Index = () => {
               <h3 className="font-heading text-2xl font-semibold text-foreground">Спартак</h3>
               <div className="flex flex-wrap gap-2 text-sm">
                 <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground">10+ лет личной практики</span>
-                <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground">~5 лет преподавания</span>
+                <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground">Около 5 лет преподавания</span>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                Я не обещаю чудес. Я веду практику так, чтобы человек постепенно возвращал контакт с телом, силу, собранность и привычку заниматься регулярно.
-              </p>
-              <blockquote className="border-l-2 border-accent pl-4 text-foreground italic">
-                «Мне важно не впечатлить человека, а помочь ему втянуться в практику и почувствовать, что тело снова можно собрать.»
-              </blockquote>
-              <p className="text-sm text-muted-foreground">
-                Путь через личный опыт, а не через образ гуру. Ценности: регулярность, уважение к телу, понятная структура занятий, работа без эзотерики.
+                Мой подход — это понятные инструкции, внимание к телу и практика без эзотерики. Мне важно не впечатлить сложной формой, а помочь человеку втянуться в занятия и почувствовать, что тело снова становится сильнее и собраннее.
               </p>
             </div>
           </div>
@@ -155,7 +149,7 @@ const Index = () => {
             </div>
             <div className="space-y-5 md:w-1/2">
               <p className="text-foreground leading-relaxed">
-                Небольшой зал недалеко от метро ВДНХ. Формат до 4 человек позволяет работать внимательнее и без ощущения, что вы потерялись в потоке.
+                Небольшой зал в 7–8 минутах от метро ВДНХ. Формат до 4 человек позволяет работать внимательнее и без ощущения, что вы потерялись в потоке.
               </p>
               <div className="grid grid-cols-2 gap-3">
                 {[
@@ -181,7 +175,7 @@ const Index = () => {
           <SectionTitle>Форматы и цены</SectionTitle>
           <div className="grid sm:grid-cols-3 gap-5">
             {[
-              { title: "Разовое / пробное", price: "1 500 ₽", note: null },
+              { title: "Разовое / пробное занятие", price: "1 500 ₽", note: null },
               { title: "Абонемент 4 занятия", price: "5 000 ₽", note: "1 250 ₽ за занятие" },
               { title: "Абонемент 8 занятий", price: "9 000 ₽", note: "1 125 ₽ за занятие" },
             ].map((plan, i) => (
@@ -202,12 +196,11 @@ const Index = () => {
           <SectionTitle>Частые вопросы</SectionTitle>
           <Accordion type="single" collapsible className="space-y-2">
             {[
-              { q: "Подойдёт ли мне, если я никогда не занимался?", a: "Да. Формат рассчитан на людей без подготовки. Вы начнёте с базовых форм, и нагрузка будет адаптирована под ваш уровень." },
-              { q: "Это мягкая или интенсивная практика?", a: "Скорее интенсивная, но без надрыва. Нагрузка ощутимая, но безопасная — вы работаете в своём темпе." },
-              { q: "Если у меня слабая подготовка?", a: "Это нормально. Маленькая группа позволяет уделять внимание каждому и корректировать нагрузку." },
-              { q: "Сколько человек в группе?", a: "Максимум 4 человека. Это принципиальное ограничение формата." },
-              { q: "Как записаться на первое занятие?", a: "Оставьте номер телефона в форме на этой странице. Я свяжусь с вами и согласуем удобное время для пробного занятия." },
-              { q: "Что будет после заявки?", a: "Я свяжусь с вами лично, пришлю расписание ближайшего набора и ссылки на закрытый канал в Telegram и Max." },
+              { q: "Я никогда не занимался. Мне подойдёт?", a: "Да. Формат подходит и тем, кто только начинает. Всё объясняется спокойно и по шагам." },
+              { q: "Это мягко или интенсивно?", a: "Скорее спокойно и плотно. Без суеты, но с хорошей работой тела." },
+              { q: "А если я совсем негибкий?", a: "Это нормально. Гибкость не нужна на старте. Важнее прийти и начать заниматься регулярно." },
+              { q: "Сколько человек в группе?", a: "Максимум 4 человека. Это принципиально важный формат." },
+              { q: "Что будет после заявки?", a: "Я свяжусь с вами, расскажу про ближайшие окна в группе и пришлю ссылку на удобный мессенджер." },
             ].map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-lg px-5 bg-background">
                 <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4">
@@ -227,7 +220,7 @@ const Index = () => {
         <div className="container max-w-2xl text-center space-y-6">
           <SectionTitle>Запишитесь на пробное занятие</SectionTitle>
           <p className="text-muted-foreground leading-relaxed">
-            Оставьте номер — я свяжусь с вами, расскажу про ближайшие окна в группе и пришлю ссылки на Telegram и Max.
+            Пробное занятие — самый простой способ понять, подходит ли вам этот формат. Оставьте номер, и я свяжусь с вами.
           </p>
           {ctaSubmitted ? (
             <ThankYou />
