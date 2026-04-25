@@ -6,22 +6,80 @@ const corsHeaders = {
 const NOTIFY_EMAIL = 'almaznayaspina@gmail.com';
 const TELEGRAM_GATEWAY_URL = 'https://connector-gateway.lovable.dev/telegram';
 
+const ALLOWED_SOURCES = new Set(['vdnh_landing']);
+const PHONE_REGEX = /^[0-9]{10,11}$/;
+
+const escapeHtml = (s: string): string =>
+  s.replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+// Naive in-memory rate limiter (per warm instance) — limits abuse bursts.
+const rateBuckets = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 5; // max requests
+const RATE_WINDOW_MS = 60_000; // per minute per IP
+
+const isRateLimited = (ip: string): boolean => {
+  const now = Date.now();
+  const bucket = rateBuckets.get(ip);
+  if (!bucket || bucket.resetAt < now) {
+    rateBuckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  bucket.count += 1;
+  return bucket.count > RATE_LIMIT;
+};
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { phone, source } = await req.json();
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      req.headers.get('cf-connecting-ip') ||
+      'unknown';
+    if (isRateLimited(ip)) {
+      return new Response(JSON.stringify({ error: 'Too many requests' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
-    if (!phone || typeof phone !== 'string') {
-      return new Response(JSON.stringify({ error: 'phone is required' }), {
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
+    const rawPhone = (body as { phone?: unknown })?.phone;
+    const rawSource = (body as { source?: unknown })?.source;
+
+    if (typeof rawPhone !== 'string' || !PHONE_REGEX.test(rawPhone)) {
+      return new Response(JSON.stringify({ error: 'Invalid phone format' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const phone = rawPhone;
+
+    const source =
+      typeof rawSource === 'string' && ALLOWED_SOURCES.has(rawSource)
+        ? rawSource
+        : 'vdnh_landing';
+
+    const safePhone = escapeHtml(phone);
+    const safeSource = escapeHtml(source);
+
     const now = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
+    const safeNow = escapeHtml(now);
     const results: Record<string, string> = {};
 
     // Email via Resend
@@ -40,9 +98,9 @@ Deno.serve(async (req) => {
             subject: 'Новая заявка: йога ВДНХ',
             html: `
               <h2>Новая заявка с лендинга</h2>
-              <p><strong>Телефон:</strong> ${phone}</p>
-              <p><strong>Источник:</strong> ${source || 'vdnh_landing'}</p>
-              <p><strong>Дата и время:</strong> ${now}</p>
+              <p><strong>Телефон:</strong> ${safePhone}</p>
+              <p><strong>Источник:</strong> ${safeSource}</p>
+              <p><strong>Дата и время:</strong> ${safeNow}</p>
             `,
           }),
         });
@@ -60,7 +118,7 @@ Deno.serve(async (req) => {
 
     if (lovableApiKey && telegramApiKey && telegramChatId) {
       try {
-        const text = `📋 Новая заявка: йога ВДНХ\n\n📱 Телефон: ${phone}\n📌 Источник: ${source || 'vdnh_landing'}\n🕐 ${now}`;
+        const text = `📋 Новая заявка: йога ВДНХ\n\n📱 Телефон: ${safePhone}\n📌 Источник: ${safeSource}\n🕐 ${safeNow}`;
         const tgResponse = await fetch(`${TELEGRAM_GATEWAY_URL}/sendMessage`, {
           method: 'POST',
           headers: {
@@ -91,7 +149,8 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('notify-lead error:', error);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
