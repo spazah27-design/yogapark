@@ -6,7 +6,7 @@ const corsHeaders = {
 const NOTIFY_EMAIL = 'almaznayaspina@gmail.com';
 const TELEGRAM_GATEWAY_URL = 'https://connector-gateway.lovable.dev/telegram';
 
-const ALLOWED_SOURCES = new Set(['vdnh_landing']);
+const ALLOWED_SOURCES = new Set(['vdnh_landing', 'turgenevskaya_landing']);
 const PHONE_REGEX = /^[0-9]{10,11}$/;
 
 const escapeHtml = (s: string): string =>
@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
     const source =
       typeof rawSource === 'string' && ALLOWED_SOURCES.has(rawSource)
         ? rawSource
-        : 'vdnh_landing';
+        : 'turgenevskaya_landing';
 
     const safePhone = escapeHtml(phone);
     const safeSource = escapeHtml(source);

@@ -43,14 +43,14 @@ const LeadForm = ({ buttonText = "Оставить номер и получит�
     try {
       const { error: dbError } = await supabase.from('leads').insert({
         phone: digits,
-        source: 'vdnh_landing',
+        source: 'turgenevskaya_landing',
       });
 
       if (dbError) throw dbError;
 
       // Send email notification (fire and forget)
       supabase.functions.invoke('notify-lead', {
-        body: { phone: digits, source: 'vdnh_landing' },
+        body: { phone: digits, source: 'turgenevskaya_landing' },
       }).catch(console.error);
 
       // Yandex Metrika event
