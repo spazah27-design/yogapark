@@ -3,7 +3,9 @@ import LeadForm from "@/components/LeadForm";
 import ThankYou from "@/components/ThankYou";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import trainerImg from "@/assets/trainer.jpeg";
-import spaceImg from "@/assets/space.webp";
+import spaceMain from "@/assets/space-main.jpeg";
+import space2 from "@/assets/space-2.jpeg";
+import space3 from "@/assets/space-3.jpeg";
 import {
   Accordion,
   AccordionContent,
@@ -29,13 +31,13 @@ const Index = () => {
       <section className="relative py-16 md:py-24">
         <div className="container max-w-3xl text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-tight">
-            Йога у&nbsp;метро Тургеневская
+            Йога рядом с&nbsp;метро Тургеневская
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Спокойная интенсивная практика без эзотерики для тех, кто много сидит, чувствует зажатость в спине и шее и хочет вернуть телу подвижность.
+            Спокойная по темпу и плотная по нагрузке практика без эзотерики для тех, кто много сидит, чувствует зажатость в спине и шее и хочет вернуть телу подвижность.
           </p>
           <p className="text-base text-muted-foreground">
-            Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Расписание и ближайшие окна — в Telegram-канале и в Max. Подходит новичкам и тем, кто давно откладывал.
+            Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Подходит новичкам и тем, кто давно откладывал.
           </p>
 
           <div className="flex justify-center pt-4">
@@ -45,7 +47,7 @@ const Index = () => {
               <div className="w-full max-w-md space-y-3">
                 <LeadForm buttonText="Оставить номер и записаться на пробное" onSuccess={() => setHeroSubmitted(true)} />
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  После заявки я свяжусь с вами, расскажу про ближайшее время занятия и пришлю удобный способ связи через Telegram или Max.
+                  После заявки я свяжусь с вами, расскажу про ближайшее время занятия. Если групповое время не подойдёт, можно начать с индивидуального занятия.
                 </p>
               </div>
             )}
