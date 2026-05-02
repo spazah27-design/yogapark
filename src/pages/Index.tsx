@@ -145,8 +145,33 @@ const Index = () => {
         <div className="container">
           <SectionTitle>Где проходят занятия</SectionTitle>
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="w-full md:w-1/2 rounded-2xl overflow-hidden aspect-[4/3]">
-              <img src={spaceImg} alt="Зал для занятий йогой на Милютинском переулке у метро Тургеневская" className="w-full h-full object-cover" />
+            <div className="w-full md:w-1/2 space-y-3">
+              <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-sm">
+                <img
+                  src={spaceMain}
+                  alt="Светлый мансардный зал для йоги на Милютинском переулке у метро Тургеневская"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl overflow-hidden aspect-[4/3]">
+                  <img
+                    src={space2}
+                    alt="Зал с инвентарём для йоги в центре Москвы"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="rounded-xl overflow-hidden aspect-[4/3]">
+                  <img
+                    src={space3}
+                    alt="Дополнительное пространство зала для занятий йогой"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
             </div>
             <div className="space-y-5 md:w-1/2">
               <p className="text-foreground leading-relaxed">
@@ -177,11 +202,12 @@ const Index = () => {
       <section className="py-16 md:py-20">
         <div className="container">
           <SectionTitle>Форматы и цены</SectionTitle>
-          <div className="grid sm:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               { title: "Разовое / пробное занятие", price: "1 500 ₽", note: null },
               { title: "Абонемент 4 занятия", price: "5 000 ₽", note: "1 250 ₽ за занятие" },
               { title: "Абонемент 8 занятий", price: "9 000 ₽", note: "1 125 ₽ за занятие" },
+              { title: "Индивидуальное занятие", price: "2 700 ₽", note: "один на один с тренером" },
             ].map((plan, i) => (
               <div key={i} className="p-6 rounded-lg bg-card border border-border text-center space-y-2">
                 <h3 className="font-heading text-lg font-semibold text-foreground">{plan.title}</h3>
@@ -190,7 +216,9 @@ const Index = () => {
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground mt-5 text-center">Индивидуальный формат обсуждается отдельно.</p>
+          <p className="text-sm text-muted-foreground mt-5 text-center">
+            Если время группы вам не подходит, можно начать с индивидуального формата.
+          </p>
         </div>
       </section>
 
@@ -205,6 +233,7 @@ const Index = () => {
               { q: "А если я совсем негибкий?", a: "Это нормально. Гибкость не нужна на старте. Важнее прийти и начать заниматься регулярно." },
               { q: "Что будет после заявки?", a: "Я свяжусь с вами, расскажу про ближайшее время занятия и пришлю удобный способ связи." },
               { q: "Где именно проходят занятия?", a: "Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Расписание и ближайшие окна я присылаю в Telegram-канале и в Max." },
+              { q: "Если мне не подходит время группы?", a: "Можно начать с индивидуального занятия и позже перейти в общий формат, если вам так удобнее." },
             ].map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-lg px-5 bg-background">
                 <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4">
