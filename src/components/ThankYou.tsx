@@ -2,7 +2,7 @@ const ThankYou = () => (
   <div className="text-center space-y-5 py-6 px-4">
     <h3 className="font-heading text-2xl font-semibold text-foreground">Спасибо, заявка принята</h3>
     <p className="text-muted-foreground font-body leading-relaxed max-w-md mx-auto">
-      Я свяжусь с вами и пришлю приглашение в закрытый канал. Если Telegram у вас не открывается, можно сразу перейти в Max.
+      Я свяжусь с вами, чтобы предложить ближайшее время занятия. Если Telegram у вас не открывается, можно сразу перейти в Max.
     </p>
     <div className="flex flex-col sm:flex-row gap-3 justify-center">
       <a
@@ -23,7 +23,7 @@ const ThankYou = () => (
       </a>
     </div>
     <p className="text-sm text-muted-foreground">
-      В канале будут расписание, ближайшие окна в группу, короткие видео и ответы на частые вопросы.
+      Там удобно посмотреть расписание, задать вопрос и быстро договориться по времени.
     </p>
   </div>
 );

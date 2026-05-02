@@ -3,7 +3,9 @@ import LeadForm from "@/components/LeadForm";
 import ThankYou from "@/components/ThankYou";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import trainerImg from "@/assets/trainer.jpeg";
-import spaceImg from "@/assets/space.webp";
+import spaceMain from "@/assets/space-main.jpeg";
+import space2 from "@/assets/space-2.jpeg";
+import space3 from "@/assets/space-3.jpeg";
 import {
   Accordion,
   AccordionContent,
@@ -29,13 +31,13 @@ const Index = () => {
       <section className="relative py-16 md:py-24">
         <div className="container max-w-3xl text-center space-y-6">
           <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-tight">
-            Йога у&nbsp;метро Тургеневская
+            Йога рядом с&nbsp;метро Тургеневская
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Спокойная интенсивная практика без эзотерики для тех, кто много сидит, чувствует зажатость в спине и шее и хочет вернуть телу подвижность.
+            Спокойная по темпу и плотная по нагрузке практика без эзотерики для тех, кто много сидит, чувствует зажатость в спине и шее и хочет вернуть телу подвижность.
           </p>
           <p className="text-base text-muted-foreground">
-            Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Расписание и ближайшие окна — в Telegram-канале и в Max. Подходит новичкам и тем, кто давно откладывал.
+            Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Подходит новичкам и тем, кто давно откладывал.
           </p>
 
           <div className="flex justify-center pt-4">
@@ -45,7 +47,7 @@ const Index = () => {
               <div className="w-full max-w-md space-y-3">
                 <LeadForm buttonText="Оставить номер и записаться на пробное" onSuccess={() => setHeroSubmitted(true)} />
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  После заявки я свяжусь с вами, расскажу про ближайшее время занятия и пришлю удобный способ связи через Telegram или Max.
+                  После заявки я свяжусь с вами, расскажу про ближайшее время занятия. Если групповое время не подойдёт, можно начать с индивидуального занятия.
                 </p>
               </div>
             )}
@@ -143,8 +145,33 @@ const Index = () => {
         <div className="container">
           <SectionTitle>Где проходят занятия</SectionTitle>
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="w-full md:w-1/2 rounded-2xl overflow-hidden aspect-[4/3]">
-              <img src={spaceImg} alt="Зал для занятий йогой на Милютинском переулке у метро Тургеневская" className="w-full h-full object-cover" />
+            <div className="w-full md:w-1/2 space-y-3">
+              <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-sm">
+                <img
+                  src={spaceMain}
+                  alt="Светлый мансардный зал для йоги на Милютинском переулке у метро Тургеневская"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl overflow-hidden aspect-[4/3]">
+                  <img
+                    src={space2}
+                    alt="Зал с инвентарём для йоги в центре Москвы"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="rounded-xl overflow-hidden aspect-[4/3]">
+                  <img
+                    src={space3}
+                    alt="Дополнительное пространство зала для занятий йогой"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
             </div>
             <div className="space-y-5 md:w-1/2">
               <p className="text-foreground leading-relaxed">
@@ -175,11 +202,12 @@ const Index = () => {
       <section className="py-16 md:py-20">
         <div className="container">
           <SectionTitle>Форматы и цены</SectionTitle>
-          <div className="grid sm:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               { title: "Разовое / пробное занятие", price: "1 500 ₽", note: null },
               { title: "Абонемент 4 занятия", price: "5 000 ₽", note: "1 250 ₽ за занятие" },
               { title: "Абонемент 8 занятий", price: "9 000 ₽", note: "1 125 ₽ за занятие" },
+              { title: "Индивидуальное занятие", price: "2 700 ₽", note: "один на один с тренером" },
             ].map((plan, i) => (
               <div key={i} className="p-6 rounded-lg bg-card border border-border text-center space-y-2">
                 <h3 className="font-heading text-lg font-semibold text-foreground">{plan.title}</h3>
@@ -188,7 +216,9 @@ const Index = () => {
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground mt-5 text-center">Индивидуальный формат обсуждается отдельно.</p>
+          <p className="text-sm text-muted-foreground mt-5 text-center">
+            Если время группы вам не подходит, можно начать с индивидуального формата.
+          </p>
         </div>
       </section>
 
@@ -203,6 +233,7 @@ const Index = () => {
               { q: "А если я совсем негибкий?", a: "Это нормально. Гибкость не нужна на старте. Важнее прийти и начать заниматься регулярно." },
               { q: "Что будет после заявки?", a: "Я свяжусь с вами, расскажу про ближайшее время занятия и пришлю удобный способ связи." },
               { q: "Где именно проходят занятия?", a: "Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Расписание и ближайшие окна я присылаю в Telegram-канале и в Max." },
+              { q: "Если мне не подходит время группы?", a: "Можно начать с индивидуального занятия и позже перейти в общий формат, если вам так удобнее." },
             ].map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-lg px-5 bg-background">
                 <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4">
