@@ -38,6 +38,51 @@ export type Database = {
         }
         Relationships: []
       }
+      park_leads: {
+        Row: {
+          created_at: string
+          format: string | null
+          id: string
+          park: string | null
+          phone: string
+          source: string
+          status: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          created_at?: string
+          format?: string | null
+          id?: string
+          park?: string | null
+          phone: string
+          source?: string
+          status?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          created_at?: string
+          format?: string | null
+          id?: string
+          park?: string | null
+          phone?: string
+          source?: string
+          status?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

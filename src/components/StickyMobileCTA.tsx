@@ -19,7 +19,7 @@ const StickyMobileCTA = () => {
         href="#final-cta"
         className="block w-full py-3 rounded-lg bg-primary text-primary-foreground text-center font-medium transition hover:opacity-90"
       >
-        Записаться на пробное
+        Выбрать парк и оставить номер
       </a>
     </div>
   );
