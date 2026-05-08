@@ -6,7 +6,7 @@ const corsHeaders = {
 const NOTIFY_EMAIL = 'almaznayaspina@gmail.com';
 const TELEGRAM_GATEWAY_URL = 'https://connector-gateway.lovable.dev/telegram';
 
-const ALLOWED_SOURCES = new Set(['vdnh_landing', 'turgenevskaya_landing']);
+const ALLOWED_SOURCES = new Set(['vdnh_landing', 'turgenevskaya_landing', 'parks_landing']);
 const PHONE_REGEX = /^[0-9]{10,11}$/;
 
 const escapeHtml = (s: string): string =>
@@ -61,6 +61,15 @@ Deno.serve(async (req) => {
 
     const rawPhone = (body as { phone?: unknown })?.phone;
     const rawSource = (body as { source?: unknown })?.source;
+    const rawPark = (body as { park?: unknown })?.park;
+    const rawFormat = (body as { format?: unknown })?.format;
+    const utm = {
+      utm_source: (body as any)?.utm_source,
+      utm_medium: (body as any)?.utm_medium,
+      utm_campaign: (body as any)?.utm_campaign,
+      utm_content: (body as any)?.utm_content,
+      utm_term: (body as any)?.utm_term,
+    };
 
     if (typeof rawPhone !== 'string' || !PHONE_REGEX.test(rawPhone)) {
       return new Response(JSON.stringify({ error: 'Invalid phone format' }), {
@@ -73,10 +82,16 @@ Deno.serve(async (req) => {
     const source =
       typeof rawSource === 'string' && ALLOWED_SOURCES.has(rawSource)
         ? rawSource
-        : 'turgenevskaya_landing';
+        : 'parks_landing';
 
     const safePhone = escapeHtml(phone);
     const safeSource = escapeHtml(source);
+    const safePark = typeof rawPark === 'string' ? escapeHtml(rawPark.slice(0, 100)) : '';
+    const safeFormat = typeof rawFormat === 'string' ? escapeHtml(rawFormat.slice(0, 50)) : '';
+    const utmLines = Object.entries(utm)
+      .filter(([, v]) => typeof v === 'string' && v)
+      .map(([k, v]) => `${k}: ${escapeHtml(String(v).slice(0, 200))}`)
+      .join('\n');
 
     const now = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
     const safeNow = escapeHtml(now);
@@ -93,13 +108,16 @@ Deno.serve(async (req) => {
             'Authorization': `Bearer ${resendKey}`,
           },
           body: JSON.stringify({
-            from: 'Йога ВДНХ <onboarding@resend.dev>',
+            from: 'Йога в парках <onboarding@resend.dev>',
             to: [NOTIFY_EMAIL],
-            subject: 'Новая заявка: йога ВДНХ',
+            subject: 'Новая заявка: йога в парке',
             html: `
               <h2>Новая заявка с лендинга</h2>
               <p><strong>Телефон:</strong> ${safePhone}</p>
+              ${safePark ? `<p><strong>Парк:</strong> ${safePark}</p>` : ''}
+              ${safeFormat ? `<p><strong>Формат:</strong> ${safeFormat}</p>` : ''}
               <p><strong>Источник:</strong> ${safeSource}</p>
+              ${utmLines ? `<pre style="background:#f5f5f5;padding:8px;border-radius:6px">${escapeHtml(utmLines)}</pre>` : ''}
               <p><strong>Дата и время:</strong> ${safeNow}</p>
             `,
           }),
@@ -118,7 +136,10 @@ Deno.serve(async (req) => {
 
     if (lovableApiKey && telegramApiKey && telegramChatId) {
       try {
-        const text = `📋 Новая заявка: йога ВДНХ\n\n📱 Телефон: ${safePhone}\n📌 Источник: ${safeSource}\n🕐 ${safeNow}`;
+        const parkLine = safePark ? `\n🌳 Парк: ${safePark}` : '';
+        const formatLine = safeFormat ? `\n🧘 Формат: ${safeFormat}` : '';
+        const utmBlock = utmLines ? `\n\n${utmLines}` : '';
+        const text = `📋 Новая заявка: йога в парке\n\n📱 Телефон: ${safePhone}${parkLine}${formatLine}\n📌 Источник: ${safeSource}${utmBlock}\n🕐 ${safeNow}`;
         const tgResponse = await fetch(`${TELEGRAM_GATEWAY_URL}/sendMessage`, {
           method: 'POST',
           headers: {
