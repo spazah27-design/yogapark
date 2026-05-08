@@ -1,247 +1,315 @@
 import { useState } from "react";
-import LeadForm from "@/components/LeadForm";
+import ParkLeadForm from "@/components/ParkLeadForm";
 import ThankYou from "@/components/ThankYou";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import trainerImg from "@/assets/trainer.jpeg";
-import spaceMain from "@/assets/space-main.jpeg";
-import space2 from "@/assets/space-2.jpeg";
-import space3 from "@/assets/space-3.jpeg";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import parkHero from "@/assets/park-hero.jpg";
+import parkMat from "@/assets/park-mat.jpg";
 
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground mb-8 md:mb-10">
-    {children}
-  </h2>
+const PRICES = {
+  trial: "1 500 ₽",
+  pack: "5 000 ₽",
+  individual: "2 700 ₽",
+};
+
+const trackYM = (goal: string) => {
+  if (typeof window !== "undefined" && (window as any).ym) {
+    (window as any).ym((window as any).YM_ID, "reachGoal", goal);
+  }
+};
+
+const SectionTitle = ({ children, eyebrow }: { children: React.ReactNode; eyebrow?: string }) => (
+  <div className="mb-10 md:mb-12">
+    {eyebrow && (
+      <div className="text-sm font-medium tracking-wide uppercase text-primary mb-3">{eyebrow}</div>
+    )}
+    <h2 className="font-heading text-3xl md:text-4xl font-semibold text-foreground leading-tight max-w-2xl">
+      {children}
+    </h2>
+  </div>
+);
+
+const Card = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
+  <div className={`rounded-2xl border border-border bg-card p-6 ${className}`}>{children}</div>
 );
 
 const Index = () => {
   const [heroSubmitted, setHeroSubmitted] = useState(false);
   const [ctaSubmitted, setCtaSubmitted] = useState(false);
 
+  const parks = [
+    { name: "ВДНХ / Останкино", desc: "Удобно для севера и северо-востока Москвы. Много открытого пространства и зелени." },
+    { name: "Парк Горького / Музеон", desc: "Центральная локация для утренних и вечерних занятий." },
+    { name: "Сокольники", desc: "Хороший вариант для спокойной практики и небольших групп." },
+    { name: "Измайловский парк", desc: "Больше воздуха, пространства и меньше ощущения городского шума." },
+    { name: "Центр Москвы / район Зарядья", desc: "Возможен по договорённости и с учётом правил площадки. Для маленького формата без оборудования и громкой музыки." },
+    { name: "Другой парк", desc: "Если у вас есть удобный парк рядом с домом или работой, оставьте заявку — обсудим логистику." },
+  ];
+
+  const audience = [
+    { title: "Много сидите и устаёте от экрана", text: "Когда тело к вечеру сжимается, а движения в жизни стало мало." },
+    { title: "Не хочется идти в большую студию", text: "Если комфортнее начать в маленьком формате и без студийного шума." },
+    { title: "Нужен свежий воздух и живой ритм", text: "Практика на улице помогает выйти из закрытого пространства и переключиться." },
+    { title: "Хотите начать без эзотерики", text: "Без гуру-образа, сложных слов и обещаний чудес. Просто понятная работа с телом." },
+  ];
+
+  const steps = [
+    { n: "01", title: "Вы выбираете парк", text: "Отмечаете удобную локацию или пишете свой вариант." },
+    { n: "02", title: "Оставляете номер", text: "Я связываюсь с вами и уточняю формат: мини-группа или индивидуально." },
+    { n: "03", title: "Согласуем окно по погоде", text: "На свежем воздухе важны погода, место встречи и спокойная площадка." },
+    { n: "04", title: "Приходите с ковриком", text: "Занятие проходит без лишней теории, громкой музыки и эзотерики." },
+  ];
+
+  const formats = [
+    { title: "Мини-группа 2–4 человека", text: "Для тех, кому нужна регулярность и небольшая группа без потока.", price: `от ${PRICES.trial}` },
+    { title: "Индивидуально в парке", text: "Один на один, если нужно подобрать время, темп и парк под себя.", price: PRICES.individual },
+    { title: "Для пары / друзей", text: "Можно собрать свой маленький формат и согласовать парк.", price: "по договорённости" },
+  ];
+
+  const faq = [
+    { q: "Подойдёт ли мне, если я никогда не занимался?", a: "Да. Формат подходит новичкам. Не нужна идеальная гибкость или спортивная форма." },
+    { q: "Что брать с собой?", a: "Удобную одежду, коврик, воду и слой одежды по погоде." },
+    { q: "Что если пойдёт дождь?", a: "Переносим занятие или заранее обсуждаем другой вариант. Я не провожу практику в условиях, где некомфортно или небезопасно." },
+    { q: "Можно ли заниматься в моём парке?", a: "Да, можно предложить свой парк. Я посмотрю логистику и скажу, удобно ли провести занятие там." },
+    { q: "Сколько человек в группе?", a: "Обычно 2–4 человека. Это маленький формат, где проще держать внимание к каждому." },
+    { q: "Можно ли индивидуально?", a: `Да. Индивидуальное занятие в парке стоит ${PRICES.individual}.` },
+    { q: "Где будет расписание?", a: "После заявки я пришлю приглашение в закрытый Telegram-канал с расписанием, наборами и короткими видео о формате." },
+  ];
+
   return (
-    <div className="min-h-screen bg-background font-body">
+    <div className="min-h-screen bg-background font-body text-foreground">
       <StickyMobileCTA />
 
       {/* Hero */}
-      <section className="relative py-16 md:py-24">
-        <div className="container max-w-3xl text-center space-y-6">
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-tight">
-            Йога рядом с&nbsp;метро Тургеневская
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Спокойная по темпу и плотная по нагрузке практика без эзотерики для тех, кто много сидит, чувствует зажатость в спине и шее и хочет вернуть телу подвижность.
-          </p>
-          <p className="text-base text-muted-foreground">
-            Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Подходит новичкам и тем, кто давно откладывал.
-          </p>
-
-          <div className="flex justify-center pt-4">
-            {heroSubmitted ? (
-              <ThankYou />
-            ) : (
-              <div className="w-full max-w-md space-y-3">
-                <LeadForm buttonText="Оставить номер и записаться на пробное" onSuccess={() => setHeroSubmitted(true)} />
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  После заявки я свяжусь с вами, расскажу про ближайшее время занятия. Если групповое время не подойдёт, можно начать с индивидуального занятия.
-                </p>
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `linear-gradient(180deg, hsl(var(--background) / 0.85), hsl(var(--background) / 0.95)), url(${parkHero})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          aria-hidden
+        />
+        <div className="container max-w-6xl py-14 md:py-20 lg:py-24">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                Йога на свежем воздухе в Москве
               </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Для кого */}
-      <section className="py-16 md:py-20 bg-card">
-        <div className="container">
-          <SectionTitle>Кому подойдёт этот формат</SectionTitle>
-          <div className="grid md:grid-cols-2 gap-5">
-            {[
-              { title: "Сидячая работа", text: "Если к вечеру шея и спина забирают на себя всё внимание." },
-              { title: "Мало движения", text: "Если день проходит между креслом, дорогой и диваном, а телу давно не хватает нормальной нагрузки." },
-              { title: "Хочется выпрямиться", text: "Если хочется держать корпус ровнее, двигаться свободнее и не разваливаться к концу дня." },
-              { title: "Нужен понятный подход", text: "Если вам ближе конкретная работа с телом, чем разговоры про энергии, потоки и философию." },
-            ].map((card, i) => (
-              <div key={i} className="p-6 rounded-lg bg-background border border-border">
-                <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{card.title}</h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">{card.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Что даёт */}
-      <section className="py-16 md:py-20">
-        <div className="container">
-          <SectionTitle>Что дают регулярные занятия</SectionTitle>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              "Больше подвижности и ощущения тела",
-              "Меньше скованности после рабочего дня",
-              "Более ровная осанка и собранный корпус",
-              "Спокойнее голова и меньше внутреннего шума",
-            ].map((text, i) => (
-              <div key={i} className="p-6 rounded-lg bg-card border border-border text-center">
-                <p className="text-foreground font-medium leading-relaxed">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Как проходят */}
-      <section className="py-16 md:py-20 bg-card">
-        <div className="container max-w-3xl">
-          <SectionTitle>Как проходят занятия</SectionTitle>
-          <p className="text-foreground text-lg mb-6">60 минут спокойной и плотной работы с телом.</p>
-          <div className="space-y-4 mb-8">
-            {[
-              "Настройка внимания",
-              "Разогрев",
-              "Основная статическая и статодинамическая практика",
-              "Завершение и выдох",
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="mt-1.5 w-2 h-2 rounded-full bg-primary shrink-0" />
-                <p className="text-foreground">{item}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-muted-foreground leading-relaxed border-l-2 border-primary pl-4">
-            Формат интенсивный, но без гонки. Не нужно быть гибким или подготовленным. Важно просто прийти и начать заниматься регулярно.
-          </p>
-        </div>
-      </section>
-
-      {/* Кто ведёт */}
-      <section className="py-16 md:py-20">
-        <div className="container">
-          <SectionTitle>Кто ведёт</SectionTitle>
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-            <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shrink-0 mx-auto md:mx-0">
-              <img src={trainerImg} alt="Спартак — тренер по йоге у метро Тургеневская" className="w-full h-full object-cover object-top" />
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-heading text-2xl font-semibold text-foreground">Спартак</h3>
-              <div className="flex flex-wrap gap-2 text-sm">
-                <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground">10+ лет личной практики</span>
-                <span className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground">Около 5 лет преподавания</span>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                Мой подход — это понятные инструкции, внимание к телу и практика без эзотерики. Мне важно не впечатлить сложной формой, а помочь человеку втянуться в занятия и почувствовать, что тело снова становится сильнее, ровнее и собраннее.
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
+                Йога в парке<br className="hidden md:block" /> в Москве
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
+                Мини-группа или индивидуальное занятие на свежем воздухе. Выберите удобный парк, оставьте номер, и я предложу ближайшее окно по погоде и расписанию.
+              </p>
+              <p className="text-base text-muted-foreground max-w-xl">
+                Спокойная, интенсивная практика без эзотерики. Для новичков и тех, кто устал от сидячей работы, зажатого тела и отсутствия регулярного движения. Мини-группа от {PRICES.trial}, индивидуально — {PRICES.individual}.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Где проходят */}
-      <section className="py-16 md:py-20 bg-card">
-        <div className="container">
-          <SectionTitle>Где проходят занятия</SectionTitle>
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="w-full md:w-1/2 space-y-3">
-              <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-sm">
-                <img
-                  src={spaceMain}
-                  alt="Светлый мансардный зал для йоги на Милютинском переулке у метро Тургеневская"
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl overflow-hidden aspect-[4/3]">
-                  <img
-                    src={space2}
-                    alt="Зал с инвентарём для йоги в центре Москвы"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="rounded-xl overflow-hidden aspect-[4/3]">
-                  <img
-                    src={space3}
-                    alt="Дополнительное пространство зала для занятий йогой"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="space-y-5 md:w-1/2">
-              <p className="text-foreground leading-relaxed">
-                Москва, Милютинский переулок, 15. 3 минуты пешком от метро Тургеневская — в самом центре города, спокойный зал с хорошим ремонтом.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Расписание и ближайшие свободные окна я присылаю в Telegram-канале и в Max. Туда же удобно задать вопрос перед записью.
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  "м. Тургеневская, 3 мин пешком",
-                  "Милютинский пер., 15",
-                  "Самый центр Москвы",
-                  "Спокойный зал, хороший ремонт",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2.5 p-3 rounded-lg bg-background border border-border">
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                    <span className="text-sm text-foreground">{item}</span>
-                  </div>
-                ))}
+            <div className="lg:col-span-5 lg:sticky lg:top-8" id="hero-form">
+              <div className="rounded-2xl border border-border bg-card/95 backdrop-blur-sm p-5 md:p-6 shadow-sm">
+                {heroSubmitted ? (
+                  <ThankYou />
+                ) : (
+                  <>
+                    <h2 className="font-heading text-xl md:text-2xl font-semibold mb-1">Выбрать парк и оставить номер</h2>
+                    <p className="text-sm text-muted-foreground mb-5">
+                      После заявки открою доступ в закрытый канал с расписанием.
+                    </p>
+                    <ParkLeadForm
+                      buttonText="Оставить номер"
+                      onSuccess={() => setHeroSubmitted(true)}
+                      formId="hero-form-fields"
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Форматы и цены */}
-      <section className="py-16 md:py-20">
-        <div className="container">
-          <SectionTitle>Форматы и цены</SectionTitle>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* How it works */}
+      <section className="py-16 md:py-24 bg-secondary/40">
+        <div className="container max-w-6xl">
+          <SectionTitle eyebrow="Как это работает">
+            Четыре простых шага до первого занятия
+          </SectionTitle>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {steps.map((s) => (
+              <Card key={s.n} className="space-y-3">
+                <div className="text-sm font-medium text-primary">{s.n}</div>
+                <h3 className="font-heading text-xl font-semibold">{s.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{s.text}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Parks */}
+      <section className="py-16 md:py-24">
+        <div className="container max-w-6xl">
+          <SectionTitle eyebrow="Локации">Выберите удобный парк</SectionTitle>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {parks.map((p) => (
+              <Card key={p.name} className="space-y-2">
+                <h3 className="font-heading text-lg font-semibold">{p.name}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-8">
+            <a href="#hero-form" className="inline-flex items-center text-primary font-medium hover:underline">
+              Не нашли свой парк? Напишите свой вариант →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Audience */}
+      <section className="py-16 md:py-24 bg-secondary/40">
+        <div className="container max-w-6xl">
+          <SectionTitle eyebrow="Кому подойдёт">Если узнали себя — это ваш формат</SectionTitle>
+          <div className="grid md:grid-cols-2 gap-4">
+            {audience.map((a) => (
+              <Card key={a.title} className="space-y-2">
+                <h3 className="font-heading text-lg font-semibold">{a.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{a.text}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Formats */}
+      <section className="py-16 md:py-24">
+        <div className="container max-w-6xl">
+          <SectionTitle eyebrow="Форматы">Выберите формат под себя</SectionTitle>
+          <div className="grid md:grid-cols-3 gap-4">
+            {formats.map((f) => (
+              <Card key={f.title} className="space-y-3 flex flex-col">
+                <h3 className="font-heading text-xl font-semibold">{f.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed flex-1">{f.text}</p>
+                <div className="text-foreground font-medium pt-2 border-t border-border">{f.price}</div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How practice goes */}
+      <section className="py-16 md:py-24 bg-secondary/40">
+        <div className="container max-w-6xl grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <SectionTitle eyebrow="Практика">Как проходит занятие</SectionTitle>
+            <ul className="space-y-3 text-muted-foreground">
+              {[
+                "встреча в понятной точке парка",
+                "короткая настройка внимания",
+                "суставная разминка",
+                "основная статическая и статодинамическая практика",
+                "спокойное завершение",
+                "без громкой музыки, реквизита и показухи",
+              ].map((line) => (
+                <li key={line} className="flex gap-3">
+                  <span className="mt-2 inline-block w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-foreground mt-6 leading-relaxed">
+              Практика интенсивная, но спокойная. Не нужно быть гибким, спортивным или подготовленным. Важно прийти, разложить коврик и начать двигаться регулярно.
+            </p>
+          </div>
+          <div className="rounded-2xl overflow-hidden border border-border">
+            <img src={parkMat} alt="Коврик для йоги в парке" loading="lazy" width={1280} height={896} className="w-full h-auto object-cover" />
+          </div>
+        </div>
+      </section>
+
+      {/* Trainer */}
+      <section className="py-16 md:py-24">
+        <div className="container max-w-6xl grid lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-5">
+            <div className="rounded-2xl overflow-hidden border border-border max-w-sm">
+              <img src={trainerImg} alt="Тренер по йоге Спартак" loading="lazy" className="w-full h-auto object-cover" />
+            </div>
+          </div>
+          <div className="lg:col-span-7 space-y-5">
+            <SectionTitle eyebrow="Кто ведёт">Спартак</SectionTitle>
+            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-muted-foreground">
+              <li className="rounded-lg bg-secondary/60 px-4 py-3">10+ лет личной практики</li>
+              <li className="rounded-lg bg-secondary/60 px-4 py-3">Около 5 лет преподавания</li>
+              <li className="rounded-lg bg-secondary/60 px-4 py-3">Путь через личный опыт, а не через образ гуру</li>
+              <li className="rounded-lg bg-secondary/60 px-4 py-3">Регулярность, уважение к телу, понятная структура</li>
+            </ul>
+            <p className="text-foreground leading-relaxed max-w-xl">
+              Я не обещаю чудес и не играю в духовного наставника. Я веду практику так, чтобы человек постепенно возвращал контакт с телом, силу, собранность и привычку заниматься регулярно.
+            </p>
+            <blockquote className="border-l-2 border-primary pl-5 py-1 text-foreground italic font-heading text-lg max-w-xl">
+              «Мне важно не впечатлить человека, а помочь ему втянуться в практику и почувствовать, что тело снова можно собрать.»
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* Weather & organization */}
+      <section className="py-16 md:py-24 bg-secondary/40">
+        <div className="container max-w-4xl">
+          <SectionTitle eyebrow="Честно">Погода и организация</SectionTitle>
+          <ul className="space-y-3 text-muted-foreground mb-6">
             {[
-              { title: "Разовое / пробное занятие", price: "1 500 ₽", note: null },
-              { title: "Абонемент 4 занятия", price: "5 000 ₽", note: "1 250 ₽ за занятие" },
-              { title: "Абонемент 8 занятий", price: "9 000 ₽", note: "1 125 ₽ за занятие" },
-              { title: "Индивидуальное занятие", price: "2 700 ₽", note: "один на один с тренером" },
-            ].map((plan, i) => (
-              <div key={i} className="p-6 rounded-lg bg-card border border-border text-center space-y-2">
-                <h3 className="font-heading text-lg font-semibold text-foreground">{plan.title}</h3>
-                <p className="text-3xl font-heading font-bold text-foreground">{plan.price}</p>
-                {plan.note && <p className="text-xs text-muted-foreground">{plan.note}</p>}
+              "если идёт сильный дождь, занятие переносим или обсуждаем другой формат",
+              "место встречи уточняется заранее",
+              "нужен свой коврик",
+              "группа маленькая, без громкой музыки и оборудования",
+              "конкретная площадка выбирается с учётом правил парка и ситуации на месте",
+            ].map((line) => (
+              <li key={line} className="flex gap-3">
+                <span className="mt-2 inline-block w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-foreground leading-relaxed">
+            Занятия на свежем воздухе требуют гибкости: погода, правила площадки и спокойное место важнее красивого обещания. Поэтому после заявки я уточняю детали и предлагаю реальное ближайшее окно.
+          </p>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="py-16 md:py-24">
+        <div className="container max-w-4xl">
+          <SectionTitle eyebrow="Цены">Понятные цены, без скрытых пакетов</SectionTitle>
+          <div className="rounded-2xl border border-border bg-card divide-y divide-border">
+            {[
+              { name: "Мини-группа / пробное занятие", price: PRICES.trial },
+              { name: "Абонемент 4 занятия", price: PRICES.pack },
+              { name: "Индивидуальное занятие в парке", price: PRICES.individual },
+              { name: "Свой маленький формат (пара / друзья)", price: "по договорённости" },
+            ].map((row) => (
+              <div key={row.name} className="flex items-center justify-between gap-4 px-5 md:px-6 py-4 md:py-5">
+                <span className="text-foreground">{row.name}</span>
+                <span className="font-heading text-lg font-semibold whitespace-nowrap">{row.price}</span>
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground mt-5 text-center">
-            Если время группы вам не подходит, можно начать с индивидуального формата.
-          </p>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-16 md:py-20 bg-card">
+      <section className="py-16 md:py-24 bg-secondary/40">
         <div className="container max-w-3xl">
-          <SectionTitle>Частые вопросы</SectionTitle>
-          <Accordion type="single" collapsible className="space-y-2">
-            {[
-              { q: "Я никогда не занимался. Мне подойдёт?", a: "Да. Формат подходит и тем, кто только начинает. Всё объясняется спокойно и по шагам." },
-              { q: "Это мягко или интенсивно?", a: "Скорее спокойно и плотно. Без суеты, но с хорошей работой тела." },
-              { q: "А если я совсем негибкий?", a: "Это нормально. Гибкость не нужна на старте. Важнее прийти и начать заниматься регулярно." },
-              { q: "Что будет после заявки?", a: "Я свяжусь с вами, расскажу про ближайшее время занятия и пришлю удобный способ связи." },
-              { q: "Где именно проходят занятия?", a: "Москва, Милютинский переулок, 15 — 3 минуты пешком от метро Тургеневская. Расписание и ближайшие окна я присылаю в Telegram-канале и в Max." },
-              { q: "Если мне не подходит время группы?", a: "Можно начать с индивидуального занятия и позже перейти в общий формат, если вам так удобнее." },
-            ].map((item, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-lg px-5 bg-background">
-                <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-4">
-                  {item.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-4">
-                  {item.a}
-                </AccordionContent>
+          <SectionTitle eyebrow="FAQ">Частые вопросы</SectionTitle>
+          <Accordion type="single" collapsible className="w-full">
+            {faq.map((item, i) => (
+              <AccordionItem key={i} value={`item-${i}`}>
+                <AccordionTrigger className="text-left font-medium">{item.q}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed">{item.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -249,40 +317,75 @@ const Index = () => {
       </section>
 
       {/* Final CTA */}
-      <section id="final-cta" className="py-16 md:py-20">
-        <div className="container max-w-2xl text-center space-y-6">
-          <SectionTitle>Запишитесь на пробное занятие</SectionTitle>
-          <p className="text-muted-foreground leading-relaxed">
-            Пробное занятие — самый простой способ понять, подходит ли вам этот формат. Оставьте номер, и я свяжусь с вами.
-          </p>
-          {ctaSubmitted ? (
-            <ThankYou />
-          ) : (
-            <div className="flex justify-center">
-              <LeadForm buttonText="Записаться на пробное занятие" onSuccess={() => setCtaSubmitted(true)} />
-            </div>
-          )}
+      <section id="final-cta" className="py-16 md:py-24">
+        <div className="container max-w-3xl">
+          <div className="rounded-2xl border border-border bg-card p-6 md:p-10">
+            <div className="text-sm font-medium tracking-wide uppercase text-primary mb-3">Заявка</div>
+            <h2 className="font-heading text-3xl md:text-4xl font-semibold leading-tight mb-3">
+              Выберите парк, и я предложу ближайшее окно
+            </h2>
+            <p className="text-muted-foreground mb-8 leading-relaxed">
+              Оставьте номер. Я свяжусь с вами, уточню удобный парк, формат занятия и погодные условия.
+            </p>
+            {ctaSubmitted ? (
+              <ThankYou />
+            ) : (
+              <ParkLeadForm
+                buttonText="Получить вариант по расписанию"
+                onSuccess={() => setCtaSubmitted(true)}
+                formId="cta-form-fields"
+              />
+            )}
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 border-t border-border">
-        <div className="container text-center space-y-3 text-sm text-muted-foreground">
-          <p className="font-heading text-lg font-semibold text-foreground">Спартак</p>
-          <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
-            <a href="tel:+79969971527" className="hover:text-foreground transition">+7 996 997-15-27</a>
-            <a href="mailto:almaznayaspina@gmail.com" className="hover:text-foreground transition">almaznayaspina@gmail.com</a>
+      <footer className="border-t border-border bg-secondary/30 py-10">
+        <div className="container max-w-6xl">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 text-sm">
+            <div>
+              <div className="font-heading text-lg font-semibold text-foreground mb-2">Спартак</div>
+              <p className="text-muted-foreground">Йога в парках Москвы. Мини-группы и индивидуальные занятия.</p>
+            </div>
+            <div className="space-y-2 text-muted-foreground">
+              <a
+                href="tel:+79969971527"
+                onClick={() => trackYM("click_phone")}
+                className="block hover:text-foreground transition"
+              >
+                +7 996 997-15-27
+              </a>
+              <a href="mailto:almaznayaspina@gmail.com" className="block hover:text-foreground transition">
+                almaznayaspina@gmail.com
+              </a>
+            </div>
+            <div className="space-y-2 text-muted-foreground">
+              <a
+                href="https://t.me/yogavdnh"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackYM("click_telegram")}
+                className="block hover:text-foreground transition"
+              >
+                Telegram-канал
+              </a>
+              <a
+                href="https://max.ru/join/-5rZSTR_Yu0HQJAsQgOwVJAo-hZlt1rS7_Fu8UsOmnc"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackYM("click_max")}
+                className="block hover:text-foreground transition"
+              >
+                Max
+              </a>
+              <a href="/privacy" className="block hover:text-foreground transition">
+                Политика конфиденциальности
+              </a>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
-            <a href="https://t.me/yogavdnh" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition">Telegram</a>
-            <a href="https://max.ru/join/-5rZSTR_Yu0HQJAsQgOwVJAo-hZlt1rS7_Fu8UsOmnc" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition">Max</a>
-          </div>
-          <a href="/privacy" className="text-xs hover:text-foreground transition">Политика конфиденциальности</a>
         </div>
       </footer>
-
-      {/* Bottom padding for sticky CTA on mobile */}
-      <div className="h-16 md:hidden" />
     </div>
   );
 };
