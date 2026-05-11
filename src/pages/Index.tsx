@@ -8,8 +8,9 @@ import parkHero from "@/assets/park-hero.jpg";
 import parkMat from "@/assets/park-mat.jpg";
 
 const PRICES = {
-  trial: "1 500 ₽",
-  pack: "5 000 ₽",
+  trial: "1 200 ₽",
+  pack4: "4 000 ₽",
+  pack8: "7 500 ₽",
   individual: "2 700 ₽",
 };
 
@@ -39,13 +40,12 @@ const Index = () => {
   const [ctaSubmitted, setCtaSubmitted] = useState(false);
 
   const parks = [
-    { name: "Сад Эрмитаж", desc: "Одна из ближайших локаций к Малой Дмитровке. Хороший вариант для спокойной утренней практики в центре, если на месте есть свободное тихое пространство." },
-    { name: "Сад Аквариум / Маяковская", desc: "Небольшой зелёный сад рядом с Маяковской. Подходит для индивидуальной практики или очень маленького формата по договорённости." },
-    { name: "Патриаршие пруды", desc: "Центральная и узнаваемая локация для спокойной практики без громкой музыки, оборудования и сбора большой группы." },
-    { name: "Екатерининский / Делегатский парк", desc: "Больше пространства и воздуха, чем в маленьких садах центра. Удобно для мини-группы и неспешной практики." },
-    { name: "Парк Горького / Музеон", desc: "Популярная локация для занятий на свежем воздухе. Хорошо подходит для утреннего или вечернего формата." },
-    { name: "ВДНХ / Останкино", desc: "Вариант для тех, кому удобен север и северо-восток Москвы. Локацию и точку встречи согласуем заранее." },
-    { name: "Другой парк", desc: "Если вам удобен другой парк рядом с домом или работой, оставьте заявку — я посмотрю логистику и предложу реальный вариант." },
+    { name: "Сад Эрмитаж", desc: "Тихий зелёный сад в центре. Хороший вариант для спокойной утренней или вечерней практики." },
+    { name: "Таганский парк", desc: "Удобная локация на юго-востоке центра. Достаточно пространства для мини-группы." },
+    { name: "Красная Пресня", desc: "Парк рядом с деловым центром. Подходит для практики до или после работы." },
+    { name: "Сокольники", desc: "Большой парк с разными зонами. Можно подобрать спокойное место под формат." },
+    { name: "Измайловский", desc: "Просторный парк с лесной атмосферой. Хорошо для неспешной длинной практики." },
+    { name: "Другой парк", desc: "Если вам удобен другой парк рядом с домом или работой — оставьте заявку, обсудим логистику." },
   ];
 
   const audience = [
@@ -63,15 +63,26 @@ const Index = () => {
   ];
 
   const formats = [
-    { title: "Мини-группа 2–4 человека", text: "Для тех, кому нужна регулярность и небольшая группа без потока.", price: `от ${PRICES.trial}` },
+    { title: "Мини-группа до 4 человек", text: "Для тех, кому нужна регулярность и небольшая группа без потока.", price: `от ${PRICES.trial}` },
     { title: "Индивидуально в парке", text: "Один на один, если нужно подобрать время, темп и парк под себя.", price: PRICES.individual },
-    { title: "Для пары / друзей", text: "Можно собрать свой маленький формат и согласовать парк.", price: "по договорённости" },
+  ];
+
+  const whyPark = [
+    { title: "1,5 часа вместо 60 минут", text: "В студии ты ограничен таймингом. В парке — не смотришь на часы. Успеваешь полноценно размяться, поработать и спокойно завершить." },
+    { title: "Воздух вместо кондиционера", text: "Свежий воздух, земля под ногами, небо над головой. Тело дышит иначе." },
+    { title: "Без эзотерики и гуру", text: "Никаких «открой чакры» и громкой музыки. Просто понятная практика с уважением к телу." },
+    { title: "Маленькая группа", text: "До 4 человек. Я вижу каждого, поправляю, подстраиваю программу." },
+  ];
+
+  const objections = [
+    { q: "Я никогда не занимался", a: "80% учеников начинали с нуля. Практика адаптируется под любой уровень." },
+    { q: "У меня нет коврика", a: "Напишите — подскажу, где недорого купить, или договоримся." },
+    { q: "Вдруг дождь", a: "Переносим по погоде. Я слежу за прогнозом и предупреждаю заранее." },
+    { q: "Дороговато разовое", a: "Абонемент на 8 занятий = 937 ₽ за занятие. Дешевле массажа." },
   ];
 
   const faq = [
     { q: "Подойдёт ли мне, если я никогда не занимался?", a: "Да. Формат подходит новичкам. Не нужна идеальная гибкость или спортивная форма." },
-    { q: "Почему нет Зарядья?", a: "Парк Зарядье официально не разрешает самовольные групповые и коммерческие занятия. Поэтому я не предлагаю его как локацию для заявок. Лучше выбрать парк, где можно провести практику спокойно и корректно." },
-    { q: "Можно ли заниматься рядом с Малой Дмитровкой?", a: "Да. Я сам нахожусь рядом с Малой Дмитровкой / Маяковской / Пушкинской, поэтому Сад Эрмитаж, Сад Аквариум, Патриаршие пруды и другие центральные локации удобнее всего для быстрого старта." },
     { q: "Что брать с собой?", a: "Удобную одежду, коврик, воду и слой одежды по погоде." },
     { q: "Что если пойдёт дождь?", a: "Переносим занятие или заранее обсуждаем другой вариант. Я не провожу практику в условиях, где некомфортно или небезопасно." },
     { q: "Можно ли заниматься в моём парке?", a: "Да, можно предложить свой парк. Я посмотрю логистику и скажу, удобно ли провести занятие там." },
@@ -84,8 +95,24 @@ const Index = () => {
     <div className="min-h-screen bg-background font-body text-foreground">
       <StickyMobileCTA />
 
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-20">
+        <div className="container max-w-6xl py-4 flex items-center justify-between">
+          <div className="font-heading text-lg md:text-xl font-semibold text-foreground">SpartakYogaPark</div>
+          <a
+            href="https://t.me/yogavdnh"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackYM("click_telegram")}
+            className="inline-flex items-center px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition"
+          >
+            Мой Telegram-канал
+          </a>
+        </div>
+      </header>
+
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
         <div
           className="absolute inset-0 -z-10"
           style={{
@@ -95,20 +122,20 @@ const Index = () => {
           }}
           aria-hidden
         />
-        <div className="container max-w-6xl py-14 md:py-20 lg:py-24">
+        <div className="container max-w-6xl py-14 md:py-20 lg:py-24 animate-fade-in">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                Йога на свежем воздухе в центре Москвы
+                SpartakYogaPark
               </div>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
-                Йога в парке<br className="hidden md:block" /> в центре Москвы
+                SpartakYogaPark —<br className="hidden md:block" /> йога на свежем воздухе
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
-                Мини-группа или индивидуальное занятие на свежем воздухе. Выберите удобный парк, оставьте номер, и я предложу ближайшее окно по погоде и расписанию.
+                Занятия по 1,5 часа в парках Москвы. Мини-группы до 4 человек.
               </p>
               <p className="text-base text-muted-foreground max-w-xl">
-                Я живу рядом с Малой Дмитровкой и сам регулярно практикую в ближайших парках центра. Чаще всего рассматриваю Сад Эрмитаж, Сад Аквариум, Патриаршие пруды, Екатерининский парк, Парк Горького и Музеон. Мини-группа от {PRICES.trial}, индивидуально — {PRICES.individual}.
+                Практикую в парках по всей Москве. Сейчас на стадии согласования постоянных площадок: Сад Эрмитаж, Таганский парк, Красная Пресня, Сокольники, Измайловский.
               </p>
             </div>
 
@@ -123,7 +150,7 @@ const Index = () => {
                       После заявки открою доступ в закрытый канал с расписанием.
                     </p>
                     <ParkLeadForm
-                      buttonText="Оставить номер"
+                      buttonText="Хочу на пробное"
                       onSuccess={() => setHeroSubmitted(true)}
                       formId="hero-form-fields"
                     />
@@ -156,9 +183,9 @@ const Index = () => {
       {/* Parks */}
       <section className="py-16 md:py-24">
         <div className="container max-w-6xl">
-          <SectionTitle eyebrow="Локации">Выберите парк в центре Москвы</SectionTitle>
+          <SectionTitle eyebrow="Локации">Парки Москвы</SectionTitle>
           <p className="text-muted-foreground leading-relaxed max-w-3xl mb-8 -mt-4">
-            Моя базовая точка — район Малой Дмитровки, Маяковской и Пушкинской. Поэтому быстрее всего организовать занятие в ближайших парках центра. Популярные локации тоже можно обсудить отдельно.
+            Практикую в парках по всей Москве. Сейчас на стадии согласования постоянных площадок. Конкретное место в парке выбираем с учётом погоды и правил площадки.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {parks.map((p) => (
@@ -179,8 +206,23 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Audience */}
+      {/* Why park */}
       <section className="py-16 md:py-24 bg-secondary/40">
+        <div className="container max-w-6xl">
+          <SectionTitle eyebrow="Преимущества">Почему парк, а не студия</SectionTitle>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {whyPark.map((w) => (
+              <Card key={w.title} className="space-y-2 transition hover:-translate-y-1 hover:shadow-md duration-300">
+                <h3 className="font-heading text-lg font-semibold">{w.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{w.text}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Audience */}
+      <section className="py-16 md:py-24">
         <div className="container max-w-6xl">
           <SectionTitle eyebrow="Кому подойдёт">Если узнали себя — это ваш формат</SectionTitle>
           <div className="grid md:grid-cols-2 gap-4">
@@ -195,10 +237,10 @@ const Index = () => {
       </section>
 
       {/* Formats */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-secondary/40">
         <div className="container max-w-6xl">
           <SectionTitle eyebrow="Форматы">Выберите формат под себя</SectionTitle>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {formats.map((f) => (
               <Card key={f.title} className="space-y-3 flex flex-col">
                 <h3 className="font-heading text-xl font-semibold">{f.title}</h3>
@@ -257,7 +299,7 @@ const Index = () => {
               <li className="rounded-lg bg-secondary/60 px-4 py-3">Регулярность, уважение к телу, понятная структура</li>
             </ul>
             <p className="text-foreground leading-relaxed max-w-xl">
-              Я не обещаю чудес и не играю в духовного наставника. Я веду практику так, чтобы человек постепенно возвращал контакт с телом, силу, собранность и привычку заниматься регулярно.
+              Спартак. 10+ лет практики, около 5 лет преподавания. Прошёл путь от спорта к йоге через травмы и выгорание. Не играю в гуру — веду практику так, чтобы человек возвращал контакт с телом и привычку заниматься регулярно. Автор проекта SpartakYogaPark.
             </p>
             <blockquote className="border-l-2 border-primary pl-5 py-1 text-foreground italic font-heading text-lg max-w-xl">
               «Мне важно не впечатлить человека, а помочь ему втянуться в практику и почувствовать, что тело снова можно собрать.»
@@ -294,17 +336,33 @@ const Index = () => {
 
       {/* Pricing */}
       <section className="py-16 md:py-24">
+        <div className="container max-w-4xl mb-12">
+          <SectionTitle eyebrow="Сомнения">Всё ещё сомневаетесь?</SectionTitle>
+          <div className="grid md:grid-cols-2 gap-4">
+            {objections.map((o) => (
+              <Card key={o.q} className="space-y-2 transition hover:-translate-y-1 hover:shadow-md duration-300">
+                <h3 className="font-heading text-lg font-semibold">«{o.q}»</h3>
+                <p className="text-muted-foreground leading-relaxed">{o.a}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
         <div className="container max-w-4xl">
           <SectionTitle eyebrow="Цены">Понятные цены, без скрытых пакетов</SectionTitle>
           <div className="rounded-2xl border border-border bg-card divide-y divide-border">
             {[
-              { name: "Мини-группа / пробное занятие", price: PRICES.trial },
-              { name: "Абонемент 4 занятия", price: PRICES.pack },
-              { name: "Индивидуальное занятие в парке", price: PRICES.individual },
-              { name: "Свой маленький формат (пара / друзья)", price: "по договорённости" },
+              { name: "Пробное / разовое занятие", price: PRICES.trial, highlight: false },
+              { name: "Абонемент 4 занятия", price: PRICES.pack4, highlight: false },
+              { name: "Абонемент 8 занятий — выгодно", price: PRICES.pack8, highlight: true },
+              { name: "Индивидуально в парке", price: PRICES.individual, highlight: false },
             ].map((row) => (
-              <div key={row.name} className="flex items-center justify-between gap-4 px-5 md:px-6 py-4 md:py-5">
-                <span className="text-foreground">{row.name}</span>
+              <div
+                key={row.name}
+                className={`flex items-center justify-between gap-4 px-5 md:px-6 py-4 md:py-5 ${
+                  row.highlight ? "bg-primary/10" : ""
+                }`}
+              >
+                <span className={`${row.highlight ? "text-foreground font-medium" : "text-foreground"}`}>{row.name}</span>
                 <span className="font-heading text-lg font-semibold whitespace-nowrap">{row.price}</span>
               </div>
             ))}
@@ -333,7 +391,7 @@ const Index = () => {
           <div className="rounded-2xl border border-border bg-card p-6 md:p-10">
             <div className="text-sm font-medium tracking-wide uppercase text-primary mb-3">Заявка</div>
             <h2 className="font-heading text-3xl md:text-4xl font-semibold leading-tight mb-3">
-              Выберите парк в центре, и я предложу ближайшее окно
+              Выберите парк, и я предложу ближайшее окно
             </h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
               Оставьте номер. Я свяжусь с вами, уточню парк, формат занятия и предложу реальный вариант по погоде и расписанию.
@@ -342,7 +400,7 @@ const Index = () => {
               <ThankYou />
             ) : (
               <ParkLeadForm
-                buttonText="Получить вариант по расписанию"
+                buttonText="Хочу на пробное"
                 onSuccess={() => setCtaSubmitted(true)}
                 formId="cta-form-fields"
               />
@@ -356,8 +414,8 @@ const Index = () => {
         <div className="container max-w-6xl">
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 text-sm">
             <div>
-              <div className="font-heading text-lg font-semibold text-foreground mb-2">Спартак</div>
-              <p className="text-muted-foreground">Йога в парках Москвы. Базовая точка — центр, район Малой Дмитровки / Маяковской / Пушкинской. Мини-группы и индивидуальные занятия.</p>
+              <div className="font-heading text-lg font-semibold text-foreground mb-2">SpartakYogaPark</div>
+              <p className="text-muted-foreground">SpartakYogaPark — йога в парках Москвы. Мини-группы до 4 человек и индивидуальные занятия по 1,5 часа.</p>
             </div>
             <div className="space-y-2 text-muted-foreground">
               <a
